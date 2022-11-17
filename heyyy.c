@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     //Reading the numbers
     FILE *fptr = fopen(argv[1], "r");
     if(fptr == NULL){  //Print error if the file cannot be opened
-        printf("File couldn't open! Check the path.\n");
+        printf(" Input file couldn't be opened! Check your file.\n");
     }
 
     int lineNumber = 1; //In the input file, we have num1 in line 1, num2 in line 2 and base in line 3;
