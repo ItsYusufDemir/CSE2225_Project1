@@ -18,7 +18,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f7d24b96-c84e-49af-9d5b-2604904291cf" name="Changes" comment="Some quality">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CSE2225_Project1.dir/heyyy.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CSE2225_Project1.dir/heyyy.c.obj" afterDir="false" />
@@ -209,7 +208,7 @@
       <option name="presentableId" value="Default" />
       <updated>1668672498255</updated>
       <workItem from="1668672499751" duration="1177000" />
-      <workItem from="1668673817647" duration="2045000" />
+      <workItem from="1668673817647" duration="2445000" />
     </task>
     <task id="LOCAL-00001" summary="Deneme">
       <created>1668673496729</created>
@@ -239,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668674416054</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Some quality">
+      <created>1668676338751</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1668676338751</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

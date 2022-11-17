@@ -3,4 +3,4 @@ project(CSE2225_Project1 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(CSE2225_Project1 heyyy.c)
+add_executable(CSE2225_Project1 150120032_p1.c)

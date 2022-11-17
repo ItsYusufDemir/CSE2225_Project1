@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
 
     //Reading the numbers from the file
-    FILE *fptr = fopen("C:\\Users\\james\\Documents\\GitHub\\CSE2225_Project1_Git\\sample_input.txt", "r"); //File name is being read from the console argument
+    FILE *fptr = fopen(argv[1], "r"); //File name is being read from the console argument
     if(fptr == NULL){  //Print error if the file cannot be opened
         printf(" Input file could not be opened! Check your file.\n");
     }
@@ -255,14 +255,21 @@ void sum(PointerStackPtr numbers, StackNodePtr *result, int base){
     }
     if(carryOut != 0)
         push(result, carryOut);
-    reverse(result);
+    reverse(result); //We always want our numbers are stacked backwards, to do so, we reverse our result
 }
 
 
 void multiply(StackNodePtr num1, StackNodePtr num2, int base, StackNodePtr *result){
 
-
-    if(length(num2) > length(num1)) { //To multiply correctly, we have to check the length and place it correctly!
+/* To multiply correctly, we have to check the length of the numbers and place it correctly!
+ * 4654
+ *   12
+ * x
+ * -----
+ *
+ * Bigger number is in the upper.
+ */
+    if(length(num2) > length(num1)) {
         StackNodePtr temp = num1;
         num1 = num2;
         num2 = temp;
@@ -273,16 +280,16 @@ void multiply(StackNodePtr num1, StackNodePtr num2, int base, StackNodePtr *resu
     StackNodePtr currentNum2 = num2;
 
 
-    PointerStackPtr partialMultiplies = NULL;
+    PointerStackPtr partialProducts = NULL;
     int numberOfPartialMultiplies = 0;
 
     while(currentNum2 != NULL){
         int digit2 = currentNum2->data;
-        StackNodePtr partialMultiply = NULL;
+        StackNodePtr partialProduct = NULL;
         int carryOut = 0;
 
-        for(int i = 0; i < numberOfPartialMultiplies; i++){ //Add zero to the beginning of the partial multiply by analyzing which partial multiply it is
-            push(&partialMultiply, 0);
+        for(int i = 0; i < numberOfPartialMultiplies; i++){ //Add zero to the beginning of the partial product by analyzing which partial product it is
+            push(&partialProduct, 0);
         }
 
         currentNum1 = num1;
@@ -290,21 +297,21 @@ void multiply(StackNodePtr num1, StackNodePtr num2, int base, StackNodePtr *resu
             int digit1 = currentNum1->data;
             int sum = digit1 * digit2 + carryOut;
             int remainder = sum % base;
-            push(&partialMultiply, remainder);
+            push(&partialProduct, remainder);
             carryOut = sum / base;
             currentNum1 = currentNum1->nextPtr;
         }
         if(carryOut != 0){
-            push(&partialMultiply, carryOut);
+            push(&partialProduct, carryOut);
         }
 
-        reverse(&partialMultiply); //We have to reverse the partialmultiply for the next operation which is summing all the partial multiplies
-        push2(&partialMultiplies, partialMultiply);
+        reverse(&partialProduct); //We always want our numbers are stacked backwards, to do so, we reverse our result
+        push2(&partialProducts, partialProduct);
         numberOfPartialMultiplies++;
         currentNum2 = currentNum2->nextPtr;
     }
 
-    sum(partialMultiplies, result, base);
+    sum(partialProducts, result, base);
 }
 
 void printStack(StackNodePtr stack){
