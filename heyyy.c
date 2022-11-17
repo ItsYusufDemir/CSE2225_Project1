@@ -16,7 +16,7 @@
 
 
 //STRUCTURES
-struct stackNode{  //Stack
+struct stackNode{  //Stack of digits
     int data;
     struct stackNode *nextPtr;
 };
@@ -24,7 +24,7 @@ typedef struct stackNode StackNode;
 typedef StackNode *StackNodePtr;
 
 
-struct pointerStack{ //This is a stack of pointers. Each pointer points a stack.
+struct pointerStack{ //This is a stack of pointers. Each pointer points a stack stackNode.
     StackNodePtr ptr;
     struct pointerStack *nextPtr;
 };
@@ -39,7 +39,6 @@ int push(StackNodePtr *topPtr, int value);
 int isEmpty2(PointerStackPtr stack);
 int pop2(PointerStackPtr *topPtr);
 int push2(PointerStackPtr *topPtr, StackNodePtr stackNodePtr);
-int stackToNum(StackNodePtr stack);
 void reverse(StackNodePtr *stack);
 int findMaxDigit(PointerStackPtr stack);
 int length(StackNodePtr stack);
@@ -54,13 +53,13 @@ int main(int argc, char *argv[]) {
 
     StackNodePtr num1 = NULL; //Numbers are stored in a stack
     StackNodePtr num2 = NULL;
-    StackNodePtr baseStack = NULL;
+    int base;
 
 
-    //Reading the numbers
-    FILE *fptr = fopen(argv[1], "r");
+    //Reading the numbers from the file
+    FILE *fptr = fopen("C:\\Users\\james\\Documents\\GitHub\\CSE2225_Project1_Git\\sample_input.txt", "r"); //File name is being read from the console argument
     if(fptr == NULL){  //Print error if the file cannot be opened
-        printf(" Input file couldn't be opened! Check your file.\n");
+        printf(" Input file could not be opened! Check your file.\n");
     }
 
     int lineNumber = 1; //In the input file, we have num1 in line 1, num2 in line 2 and base in line 3;
@@ -79,19 +78,14 @@ int main(int argc, char *argv[]) {
         switch (lineNumber) {
             case 1: push(&num1, currentChar - '0'); break;
             case 2: push(&num2, currentChar - '0'); break;
-            case 3: push(&baseStack, currentChar - '0'); break;
+            case 3: base = currentChar - '0'; break;
         }
     }
     fclose(fptr);
     //Data has been read.
 
-
-
-    int base = stackToNum(baseStack);
-
     StackNodePtr result = NULL;
-    multiply(num1, num2, base, &result);
-
+    multiply(num1, num2, base, &result); //We multiply num1 and num2, then the product is written to result stack
 
 
 
@@ -105,7 +99,6 @@ int main(int argc, char *argv[]) {
     convert_base10(&result_base10, result, base);
 
 
-
     //printing the result
     printStack(num1);
     printStack(num2);
@@ -113,7 +106,6 @@ int main(int argc, char *argv[]) {
     printStack(num1_base10);
     printStack(num2_base10);
     printStack(result_base10);
-
 
 
     return 0;
@@ -142,7 +134,7 @@ int pop(StackNodePtr *topPtr){
     StackNodePtr temp = *topPtr;
     *topPtr = (*topPtr)->nextPtr;
     free(temp);
-    return poppedValue;
+    return poppedValue; //Return the poppedValue
 }
 
 
@@ -150,6 +142,11 @@ int isEmpty(StackNodePtr topPtr){
     return topPtr == NULL;
 }
 
+
+/*The function below, is our second push function, this is for our second stack which
+ * is a stack of stackNodePtr
+ * Basically, it keeps numbers.
+ */
 int push2(PointerStackPtr *topPtr, StackNodePtr stackNodePtr){
     PointerStackPtr newStack = malloc(sizeof(PointerStack));
     if(newStack == NULL){
@@ -177,17 +174,6 @@ int isEmpty2(PointerStackPtr stack){
     return stack == NULL;
 }
 
-int stackToNum(StackNodePtr stack){
-    int num = 0;
-    int count = 0;
-    while(stack != NULL){
-        num = num + (stack->data) * pow(10, count);
-        stack = stack->nextPtr;
-        count++;
-    }
-    return num;
-}
-
 void reverse(StackNodePtr *stack){
     StackNodePtr newStack = NULL;
 
@@ -199,8 +185,7 @@ void reverse(StackNodePtr *stack){
     return;
 }
 
-
-int length(StackNodePtr stack){
+int length(StackNodePtr stack){ //This function find the length of the stackNodePtr
     int counter = 0;
     while(stack != NULL){
         counter++;
@@ -209,9 +194,9 @@ int length(StackNodePtr stack){
     return counter;
 }
 
-int findMaxDigit(PointerStackPtr stack){
+int findMaxDigit(PointerStackPtr stack){ //Finding the max number of digits among the stack of numbers
     int maxDigit = 0;
-    while(stack != NULL){      //Finding the max number of digits among the partial multiplies
+    while(stack != NULL){
         int currentMax = length(stack->ptr);
         if(currentMax > maxDigit)
             maxDigit = currentMax;
@@ -221,17 +206,15 @@ int findMaxDigit(PointerStackPtr stack){
 }
 
 
-void convert_base10(StackNodePtr *base_10, StackNodePtr stack, int base){
+void convert_base10(StackNodePtr *base_10, StackNodePtr stack, int base){ //This function converts a number in given base to base 10
 
-    int num = 0;
-    PointerStackPtr partialMultiplies = NULL;
+    PointerStackPtr partialProducts = NULL; //Stack of numbers. Those numbers are partial products
 
     StackNodePtr exponent = NULL;
-    push(&exponent, 1);
+    push(&exponent, 1); //Our exponent is 1 in the beginning because any numbers 0th power is 1.
 
-    StackNodePtr baseValue = NULL;
+    StackNodePtr baseValue = NULL; //Since the multiply function only works with stacks, we push the int to stack
     push(&baseValue, base);
-
 
 
     while(stack != NULL){
@@ -240,24 +223,22 @@ void convert_base10(StackNodePtr *base_10, StackNodePtr stack, int base){
         push(&digit, stack->data);
 
         multiply(digit, exponent, 10, &currentMultiply);
-        push2(&partialMultiplies, currentMultiply);
+        push2(&partialProducts, currentMultiply);
 
         StackNodePtr temp = NULL;
-        multiply(exponent, baseValue, 10, &temp); //Update the exponent
+        multiply(exponent, baseValue, 10, &temp); //Update the exponent by multiplying with base
         exponent = temp;
         stack = stack->nextPtr;
     }
-    sum(partialMultiplies, base_10, 10);
 
-
-
+    sum(partialProducts, base_10, 10); //Sum all the partial products
 }
-
 
 
 void sum(PointerStackPtr numbers, StackNodePtr *result, int base){
     int maxDigit = findMaxDigit(numbers); //Finding the max digit among the numbers
     int carryOut = 0;
+
     for(int i = 0; i < maxDigit; i++){
         int sum = 0;
         PointerStackPtr currentNumbers = numbers;
