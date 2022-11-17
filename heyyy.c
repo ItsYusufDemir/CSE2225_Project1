@@ -2,6 +2,18 @@
 #include <stdlib.h>
 #include <math.h>
 
+/* Author: Yusuf Demir
+ * Student Number: 150120032
+ * Starting Date: 11.11.2022
+ * Ending Date: 17.11.2022
+ *
+ *
+ * PROJECT DESCRIPTION
+ * ------------
+ * A program which can multiply infinitely (in theory) long numbers in base...
+ * 2<= n <= 10 and show the result in given base and base 10.
+ */
+
 
 //STRUCTURES
 struct stackNode{  //Stack
